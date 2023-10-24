@@ -12,7 +12,7 @@ const Order = () => {
     useEffect(() => {
 
         const getOrders = async () => {
-            const email = user.providerData[0].email;
+            const email = user?.providerData[0].email;
             const url = `http://localhost:5000/order?email=${email}`;
             try {
                 const { data } = await axiosPrivate.get(url);
@@ -22,7 +22,7 @@ const Order = () => {
                 console.log(error.message);
                 if (error.response.status === 403 || error.response.status === 401) {
                     signOut(auth);
-                    navigate('/login');
+                    navigate('/login')
                 }
             }
         }
@@ -33,8 +33,13 @@ const Order = () => {
 
 
     return (
-        <div>
+        <div className='w-50 mx-auto'>
             <h2>Your orders: {orders.length}</h2>
+            {
+                orders.map(order => <div key={order._id}>
+                    <p>{order.email} : {order.service}</p>
+                </div>)
+            }
         </div>
     );
 };
